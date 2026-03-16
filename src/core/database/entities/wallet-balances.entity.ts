@@ -1,0 +1,47 @@
+import {
+  Column,
+  Entity,
+  Unique,
+  ManyToOne,
+  JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+
+import { Wallet } from './wallets.entity';
+
+@Entity('wallet_balances')
+@Unique(['wallet_id', 'currency'])
+export class WalletBalance {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column({ name: 'wallet_id' })
+  walletId: string;
+
+  @Column({ length: 3 })
+  currency: string;
+
+  @Column({ type: 'numeric', precision: 20, scale: 8, default: '0' })
+  balance: string;
+
+  @Column({
+    type: 'numeric',
+    precision: 20,
+    scale: 8,
+    default: '0',
+    name: 'locked_balance',
+  })
+  lockedBalance: string;
+
+  @ManyToOne(() => Wallet, (wallet) => wallet.balances)
+  @JoinColumn({ name: 'wallet_id' })
+  wallet: Wallet;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+}
