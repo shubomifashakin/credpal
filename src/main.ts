@@ -14,6 +14,7 @@ import { Logger } from 'nestjs-pino';
 import cookieParser from 'cookie-parser';
 
 import { AppModule } from './app.module';
+import { TypeOrmExceptionFilter } from './common/filters/typeorm-error.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -70,11 +71,7 @@ async function bootstrap() {
   );
   app.enableShutdownHooks([ShutdownSignal.SIGINT, ShutdownSignal.SIGTERM]);
 
-  //FIXME: CHANGE TO GLOBAL TYPEORM ERROR FILTERS
-  // app.useGlobalFilters(
-  //   new PrismaClientKnownRequestFilterFilter(),
-  //   new PrismaClientUnknownRequestFilterFilter(),
-  // );
+  app.useGlobalFilters(new TypeOrmExceptionFilter());
 
   await app.listen(3000);
 }
