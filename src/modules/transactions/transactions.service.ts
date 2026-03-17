@@ -46,7 +46,7 @@ export class TransactionsService {
     return {
       data,
       hasNextPage,
-      cursor: nextCursor || undefined,
+      cursor: nextCursor || null,
     };
   }
 }
