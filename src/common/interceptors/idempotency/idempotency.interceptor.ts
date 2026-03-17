@@ -65,7 +65,7 @@ export class IdempotencyInterceptor implements NestInterceptor {
     }
 
     return next.handle().pipe(
-      switchMap((data) =>
+      switchMap((data: unknown) =>
         from(
           this.redisService.set(
             redisKey,
