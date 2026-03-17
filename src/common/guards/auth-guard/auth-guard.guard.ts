@@ -54,7 +54,7 @@ export class AuthGuard implements CanActivate {
 
         const claims = await this.jwtService.verifyAsync<{
           jti: string;
-          userId: string;
+          sub: string;
         }>(accessToken);
 
         if (!claims) {
@@ -76,7 +76,7 @@ export class AuthGuard implements CanActivate {
           throw new UnauthorizedException('Unauthorized');
         }
 
-        request.user = { id: claims.userId };
+        request.user = { id: claims.sub };
 
         return true;
       } catch (error: unknown) {

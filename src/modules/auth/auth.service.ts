@@ -6,6 +6,7 @@ import {
   Logger,
   Injectable,
   ConflictException,
+  NotFoundException,
   BadRequestException,
   UnauthorizedException,
   InternalServerErrorException,
@@ -132,7 +133,7 @@ export class AuthService {
     const user = await this.userRepository.findByEmail(dto.email);
 
     if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new NotFoundException('User does not exist');
     }
 
     if (user.isVerified) {
