@@ -208,13 +208,11 @@ export class WalletService {
         );
 
       if (!toBalance) {
-        this.logger.warn({
-          message: `destination wallet balance does not exist ${wallet.id}: ${dto.toCurrency}`,
+        this.logger.error({
+          message: `Failed to create/find destination wallet balance ${wallet.id}: ${dto.toCurrency}`,
         });
 
-        throw new NotFoundException(
-          'Wallet balance for this currency does not exist',
-        );
+        throw new InternalServerErrorException();
       }
 
       const currentTo = parseFloat(toBalance.balance);
