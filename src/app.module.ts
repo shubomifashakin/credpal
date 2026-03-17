@@ -21,6 +21,8 @@ import { AppConfigModule } from './core/app-config/app-config.module';
 import { AppConfigService } from './core/app-config/app-config.service';
 
 import { AuthModule } from './modules/auth/auth.module';
+import { WalletModule } from './modules/wallet/wallet.module';
+import { FxModule } from './modules/fx/fx.module';
 
 @Module({
   imports: [
@@ -185,6 +187,8 @@ import { AuthModule } from './modules/auth/auth.module';
     HasherModule,
     MailerModule,
     AuthModule,
+    WalletModule,
+    FxModule,
   ],
   controllers: [],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],

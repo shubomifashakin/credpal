@@ -40,10 +40,33 @@ export class WalletBalanceRepository {
         currency,
         balance: '0',
       });
+
       await repo.save(balance);
     }
 
     return balance;
+  }
+
+  async findByWalletIdAndCurrencyWithLock(
+    walletId: string,
+    currency: string,
+    manager: EntityManager,
+  ): Promise<WalletBalance | null> {
+    return manager.getRepository(WalletBalance).findOne({
+      where: { walletId, currency },
+      lock: { mode: 'pessimistic_write' },
+    });
+  }
+
+  async updateBalance(
+    walletId: string,
+    currency: string,
+    newBalance: string,
+    manager: EntityManager,
+  ): Promise<void> {
+    await manager
+      .getRepository(WalletBalance)
+      .update({ walletId, currency }, { balance: newBalance });
   }
 
   async save(

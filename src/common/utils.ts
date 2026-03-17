@@ -6,6 +6,7 @@ import {
   validateSync,
   IsEmail,
 } from 'class-validator';
+import { FnResult } from '../types/common.types';
 
 class EnvConfig {
   @IsString()
@@ -110,4 +111,52 @@ export function makeBlacklistedKey(token: string): string {
 
 export function makeUserKey(userId: string): string {
   return `user:${userId}`;
+}
+
+export function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export async function fetchWithRetry<T>(
+  url: string,
+  attempts: number = 3,
+): Promise<FnResult<T>> {
+  const delays = [0, 500, 1500];
+
+  let apiResponse: FnResult<T> = {
+    success: false,
+    data: null,
+    error: new Error('Api Unavailable'),
+  };
+
+  for (let i = 0; i < attempts; i++) {
+    try {
+      if (delays[i] > 0) {
+        await sleep(delays[i]);
+      }
+
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        apiResponse = {
+          success: false,
+          data: null,
+          error: new Error(`HTTP ${response.status}: ${response.statusText}`),
+        };
+
+        continue;
+      }
+
+      const data = (await response.json()) as T;
+
+      apiResponse = { success: true, data, error: null };
+      break;
+    } catch (error) {
+      if (i === attempts - 1) {
+        apiResponse = { success: false, data: null, error: makeError(error) };
+      }
+    }
+  }
+
+  return apiResponse;
 }

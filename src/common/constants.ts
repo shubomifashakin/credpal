@@ -20,9 +20,9 @@ export const DEFAULT_JWT_ALG: Algorithm = 'RS256';
 export const TOKEN = {
   ACCESS: {
     TYPE: 'access_token' as const,
-    EXPIRATION: '5m',
-    EXPIRATION_SEC: MINUTES_5,
-    EXPIRATION_MS: MINUTES_5_MS,
+    EXPIRATION: '10m',
+    EXPIRATION_SEC: MINUTES_10,
+    EXPIRATION_MS: MINUTES_10_MS,
   },
   REFRESH: {
     TYPE: 'refresh_token' as const,
@@ -31,3 +31,5 @@ export const TOKEN = {
     EXPIRATION_MS: DAYS_7_MS,
   },
 } as const;
+
+export const SUPPORTED_CURRENCIES = ['USD', 'EUR', 'GBP', 'NGN'] as const;

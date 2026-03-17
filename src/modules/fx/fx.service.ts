@@ -86,8 +86,8 @@ export class FxService {
 
     if (fresh.success && fresh.data) {
       return {
-        currency,
         ...fresh.data,
+        currency,
         stale: false,
       };
     }
