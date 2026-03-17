@@ -12,7 +12,7 @@ import {
 import { Wallet } from './wallets.entity';
 
 @Entity('wallet_balances')
-@Unique(['wallet_id', 'currency'])
+@Unique('wallet_id_currency_unique', ['walletId', 'currency'])
 export class WalletBalance {
   @PrimaryGeneratedColumn('uuid')
   id: string;

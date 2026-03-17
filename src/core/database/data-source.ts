@@ -11,10 +11,11 @@ export const AppDataSource = new DataSource({
   migrations: [path.join(__dirname, 'migrations/*{.ts,.js}')],
   synchronize: false,
   migrationsRun: false,
+  applicationName: process.env.SERVICE_NAME!,
   logging: false,
   extra: {
     max: 50,
-    min: 5,
+    min: 10,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 10000,
   },
