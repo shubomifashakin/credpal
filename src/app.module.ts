@@ -14,10 +14,13 @@ import { validateConfig } from './common/utils';
 import { RedisModule } from './core/redis/redis.module';
 import { RedisService } from './core/redis/redis.service';
 import { MailerModule } from './core/mailer/mailer.module';
+import { HasherModule } from './core/hasher/hasher.module';
 import { AppDataSource } from './core/database/data-source';
 import { DatabaseModule } from './core/database/database.module';
 import { AppConfigModule } from './core/app-config/app-config.module';
 import { AppConfigService } from './core/app-config/app-config.service';
+
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -179,7 +182,9 @@ import { AppConfigService } from './core/app-config/app-config.service';
       },
       inject: [AppConfigService],
     }),
+    HasherModule,
     MailerModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
