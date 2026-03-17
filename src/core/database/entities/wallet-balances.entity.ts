@@ -26,7 +26,9 @@ export class WalletBalance {
   @Column({ type: 'numeric', precision: 20, scale: 8, default: '0' })
   balance: string;
 
-  @ManyToOne(() => Wallet, (wallet) => wallet.balances)
+  @ManyToOne(() => Wallet, (wallet) => wallet.balances, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'wallet_id' })
   wallet: Wallet;
 

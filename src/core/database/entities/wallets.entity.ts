@@ -24,10 +24,14 @@ export class Wallet {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @OneToMany(() => WalletBalance, (balance) => balance.wallet)
+  @OneToMany(() => WalletBalance, (balance) => balance.wallet, {
+    onDelete: 'CASCADE',
+  })
   balances: WalletBalance[];
 
-  @OneToMany(() => Transaction, (tx) => tx.wallet)
+  @OneToMany(() => Transaction, (tx) => tx.wallet, {
+    onDelete: 'CASCADE',
+  })
   transactions: Transaction[];
 
   @CreateDateColumn({ name: 'created_at' })

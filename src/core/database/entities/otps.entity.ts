@@ -26,7 +26,7 @@ export class Otp {
   @Column({ default: false })
   used: boolean;
 
-  @ManyToOne(() => User, (user) => user.otps)
+  @ManyToOne(() => User, (user) => user.otps, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
