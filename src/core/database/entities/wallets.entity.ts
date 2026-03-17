@@ -20,7 +20,7 @@ export class Wallet {
   @Column({ name: 'user_id' })
   userId: string;
 
-  @OneToOne(() => User, (user) => user.wallet)
+  @OneToOne(() => User, (user) => user.wallet, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
