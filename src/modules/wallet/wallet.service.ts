@@ -21,6 +21,8 @@ import {
   TransactionStatus,
 } from '../../core/database/entities/transactions.entity';
 import { FxService } from '../fx/fx.service';
+import { SwapResponseDto } from './dtos/swap-response.dto';
+import { FundWalletResponseDto } from './dtos/fund-wallet-response.dto';
 
 @Injectable()
 export class WalletService {
@@ -56,7 +58,10 @@ export class WalletService {
     };
   }
 
-  async fund(userId: string, dto: FundWalletDto) {
+  async fund(
+    userId: string,
+    dto: FundWalletDto,
+  ): Promise<FundWalletResponseDto> {
     const wallet = await this.walletsRepo.findByUserId(userId);
 
     if (!wallet) {
@@ -117,7 +122,7 @@ export class WalletService {
       return {
         message: 'Wallet funded successfully',
         currency: dto.currency,
-        amount: dto.amount,
+        amount: dto.amount.toString(),
         newBalance,
         reference,
       };
@@ -141,7 +146,7 @@ export class WalletService {
     userId: string,
     dto: ConvertCurrencyDto | TradeDto,
     type: TransactionType,
-  ) {
+  ): Promise<SwapResponseDto> {
     const wallet = await this.walletsRepo.findByUserId(userId);
 
     if (!wallet) {

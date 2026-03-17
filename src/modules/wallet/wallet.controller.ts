@@ -12,7 +12,9 @@ import {
 
 import { TradeDto } from './dtos/trade.dto';
 import { FundWalletDto } from './dtos/fund-wallet.dto';
+import { SwapResponseDto } from './dtos/swap-response.dto';
 import { ConvertCurrencyDto } from './dtos/convert-currency.dto';
+import { FundWalletResponseDto } from './dtos/fund-wallet-response.dto';
 
 import { WalletService } from './wallet.service';
 import { AuthGuard } from '../../common/guards/auth-guard/auth-guard.guard';
@@ -43,6 +45,7 @@ export class WalletController {
   @ApiResponse({
     status: 201,
     description: 'Wallet funded successfully',
+    type: FundWalletResponseDto,
   })
   @ApiResponse({
     status: 404,
@@ -51,25 +54,39 @@ export class WalletController {
   @UseInterceptors(IdempotencyInterceptor)
   @IsIdempotent({ required: true })
   @Post('fund')
-  async fund(@Req() req: Request, @Body() dto: FundWalletDto) {
+  async fund(
+    @Req() req: Request,
+    @Body() dto: FundWalletDto,
+  ): Promise<FundWalletResponseDto> {
     return this.walletsService.fund(req.user.id, dto);
   }
 
   @ApiOperation({ summary: 'Convert currency' })
-  @ApiResponse({ status: 201, description: 'Conversion successful' })
+  @ApiResponse({
+    status: 201,
+    description: 'Conversion successful',
+    type: SwapResponseDto,
+  })
   @Post('convert')
   @UseInterceptors(IdempotencyInterceptor)
   @IsIdempotent({ required: true })
-  convert(@Req() req: Request, @Body() dto: ConvertCurrencyDto) {
+  convert(
+    @Req() req: Request,
+    @Body() dto: ConvertCurrencyDto,
+  ): Promise<SwapResponseDto> {
     return this.walletsService.convert(req.user.id, dto);
   }
 
   @ApiOperation({ summary: 'Trade currency' })
-  @ApiResponse({ status: 201, description: 'Trade successful' })
+  @ApiResponse({
+    status: 201,
+    description: 'Trade successful',
+    type: SwapResponseDto,
+  })
   @Post('trade')
   @UseInterceptors(IdempotencyInterceptor)
   @IsIdempotent({ required: true })
-  trade(@Req() req: Request, @Body() dto: TradeDto) {
+  trade(@Req() req: Request, @Body() dto: TradeDto): Promise<SwapResponseDto> {
     return this.walletsService.trade(req.user.id, dto);
   }
 }
