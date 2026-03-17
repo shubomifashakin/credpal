@@ -46,25 +46,45 @@ export class TransactionRepository {
     await repo.update(id, { status });
   }
 
-  async findPaginatedByUserId(
-    userId: string,
-    page: number,
-    limit: number,
-    type?: TransactionType,
-    status?: TransactionStatus,
-  ): Promise<{ data: Transaction[]; total: number }> {
+  async findPaginatedByUserId({
+    userId,
+    limit = 10,
+    cursor,
+    type,
+    status,
+  }: {
+    userId: string;
+    limit?: number;
+    cursor?: string;
+    type?: TransactionType;
+    status?: TransactionStatus;
+  }): Promise<{
+    data: Transaction[];
+    hasNextPage: boolean;
+    cursor: string | null;
+  }> {
     const query = this.repo
       .createQueryBuilder('tx')
       .where('tx.userId = :userId', { userId })
       .orderBy('tx.createdAt', 'DESC')
-      .skip((page - 1) * limit)
-      .take(limit);
+      .take(limit + 1);
+
+    if (cursor) {
+      query.andWhere(
+        'tx.createdAt < (SELECT t.created_at FROM transactions t WHERE t.id = :cursor)',
+        { cursor },
+      );
+    }
 
     if (type) query.andWhere('tx.type = :type', { type });
     if (status) query.andWhere('tx.status = :status', { status });
 
-    const [data, total] = await query.getManyAndCount();
+    const data = await query.getMany();
 
-    return { data, total };
+    const hasNextPage = data.length > limit;
+    const records = data.slice(0, limit);
+    const nextCursor = hasNextPage ? records[records.length - 1].id : null;
+
+    return { data: records, hasNextPage, cursor: nextCursor };
   }
 }
