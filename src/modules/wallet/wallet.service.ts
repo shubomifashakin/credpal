@@ -192,7 +192,7 @@ export class WalletService {
 
       const newFromBalance = (currentFrom - dto.amount).toFixed(8);
 
-      // upsert destination balance row (create if first time holding this currency)
+      // upsert destination balance row, basically create it if first time holding this currency
       await this.walletBalancesRepo.upsert(
         wallet.id,
         dto.toCurrency,
@@ -257,7 +257,7 @@ export class WalletService {
       await queryRunner.commitTransaction();
 
       return {
-        message: 'Swap executed successfully',
+        message: `success`,
         fromCurrency: dto.fromCurrency,
         fromAmount: dto.amount,
         toCurrency: dto.toCurrency,
