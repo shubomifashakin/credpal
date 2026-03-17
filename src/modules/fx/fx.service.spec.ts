@@ -16,6 +16,14 @@ const mockAppConfigService = {
   FxApiUrl: { success: true, data: 'testapi.example' },
 };
 
+const mockLogger = {
+  error: jest.fn(),
+  warn: jest.fn(),
+  log: jest.fn(),
+  debug: jest.fn(),
+  verbose: jest.fn(),
+};
+
 const mockFetch = jest.fn();
 global.fetch = mockFetch;
 
@@ -38,6 +46,8 @@ describe('FxService', () => {
     }).compile();
 
     service = module.get<FxService>(FxService);
+
+    module.useLogger(mockLogger);
 
     jest.clearAllMocks();
   });

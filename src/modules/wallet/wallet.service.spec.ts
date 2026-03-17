@@ -33,6 +33,14 @@ const mockFxService = {
   getRate: jest.fn(),
 };
 
+const mockLogger = {
+  error: jest.fn(),
+  warn: jest.fn(),
+  log: jest.fn(),
+  debug: jest.fn(),
+  verbose: jest.fn(),
+};
+
 const mockConnectFn = jest.fn();
 const mockStartTransactionFn = jest.fn();
 const mockCommitTransactionFn = jest.fn();
@@ -67,6 +75,8 @@ describe('WalletService', () => {
     }).compile();
 
     service = module.get<WalletService>(WalletService);
+
+    module.useLogger(mockLogger);
 
     jest.clearAllMocks();
   });
