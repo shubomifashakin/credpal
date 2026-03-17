@@ -10,11 +10,17 @@ export class SwapResponseDto {
   @ApiProperty({ description: 'The currency to convert/trade to' })
   toCurrency: string;
 
-  @ApiProperty({ description: 'The amount to convert/trade from' })
-  fromAmount: number;
+  @ApiProperty({
+    description: 'The amount to convert/trade from',
+    type: 'string',
+  })
+  fromAmount: string;
 
-  @ApiProperty({ description: 'The amount to convert/trade to' })
-  toAmount: number;
+  @ApiProperty({
+    description: 'The amount to convert/trade to',
+    type: 'string',
+  })
+  toAmount: string;
 
   @ApiProperty({ description: 'The rate used' })
   rate: number;

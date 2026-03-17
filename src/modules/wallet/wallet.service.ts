@@ -262,9 +262,9 @@ export class WalletService {
       return {
         message: `success`,
         fromCurrency: dto.fromCurrency,
-        fromAmount: dto.amount,
+        fromAmount: dto.amount.toString(),
         toCurrency: dto.toCurrency,
-        toAmount: parseFloat(toAmount),
+        toAmount: toAmount,
         rate,
         reference,
         stale: rateResult.data.stale,
