@@ -5,11 +5,13 @@ import {
   JoinColumn,
   CreateDateColumn,
   PrimaryGeneratedColumn,
+  Index,
 } from 'typeorm';
 
 import { User } from './users.entity';
 
 @Entity('otps')
+@Index('idx_user_code', ['userId', 'code'])
 export class Otp {
   @PrimaryGeneratedColumn('uuid')
   id: string;

@@ -6,6 +6,7 @@ import {
   JoinColumn,
   CreateDateColumn,
   PrimaryGeneratedColumn,
+  Index,
 } from 'typeorm';
 
 import { User } from './users.entity';
@@ -13,6 +14,7 @@ import { Transaction } from './transactions.entity';
 import { WalletBalance } from './wallet-balances.entity';
 
 @Entity('wallets')
+@Index('idx_user_id', ['userId'])
 export class Wallet {
   @PrimaryGeneratedColumn('uuid')
   id: string;

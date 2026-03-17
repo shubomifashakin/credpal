@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -23,6 +24,8 @@ export enum TransactionStatus {
 }
 
 @Entity('transactions')
+@Index('idx_user', ['userId'])
+@Index('idx_wallet_id', ['walletId'])
 export class Transaction {
   @PrimaryGeneratedColumn('uuid')
   id: string;
