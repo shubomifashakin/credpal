@@ -11,11 +11,13 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 
+import { v4 as uuid } from 'uuid';
+
 import { VerifyDto } from './dtos/verify.dto';
 import { RegisterDto } from './dtos/register.dto';
 import { VerifyResponseDto } from './dtos/verify-response.dto';
 
-import { MINUTES_10_MS, TOKEN } from '../../common/constants';
+import { DEFAULT_JWT_ALG, MINUTES_10_MS, TOKEN } from '../../common/constants';
 import { HasherService } from '../../core/hasher/hasher.service';
 import { MailerService } from '../../core/mailer/mailer.service';
 import { AppConfigService } from '../../core/app-config/app-config.service';
@@ -189,16 +191,20 @@ export class AuthService {
       await queryRunner.release();
     }
 
-    const payload = { sub: user.id, email: user.email };
+    const payload = { sub: user.id };
+    const accessTokenId = uuid();
+    const refreshTokenId = uuid();
 
     const accessToken = this.jwtService.sign(payload, {
       expiresIn: TOKEN.ACCESS.EXPIRATION,
-      algorithm: 'RS256',
+      algorithm: DEFAULT_JWT_ALG,
+      jwtid: accessTokenId,
     });
 
     const refreshToken = this.jwtService.sign(payload, {
       expiresIn: TOKEN.REFRESH.EXPIRATION,
-      algorithm: 'RS256',
+      algorithm: DEFAULT_JWT_ALG,
+      jwtid: refreshTokenId,
     });
 
     return { accessToken, refreshToken };
