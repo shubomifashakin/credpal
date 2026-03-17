@@ -71,7 +71,7 @@ export class WalletService {
       const queryManager = queryRunner.manager;
 
       //acquire a lock on the current wallet balance
-      const balance =
+      let balance =
         await this.walletBalancesRepo.findByWalletIdAndCurrencyWithLock(
           wallet.id,
           dto.currency,
@@ -80,7 +80,7 @@ export class WalletService {
 
       //if no wallet balance exists for that currency, create one
       if (!balance) {
-        await this.walletBalancesRepo.upsert(
+        balance = await this.walletBalancesRepo.upsert(
           wallet.id,
           dto.currency,
           queryManager,
@@ -207,7 +207,17 @@ export class WalletService {
           queryManager,
         );
 
-      const currentTo = parseFloat(toBalance!.balance);
+      if (!toBalance) {
+        this.logger.warn({
+          message: `destination wallet balance does not exist ${wallet.id}: ${dto.toCurrency}`,
+        });
+
+        throw new NotFoundException(
+          'Wallet balance for this currency does not exist',
+        );
+      }
+
+      const currentTo = parseFloat(toBalance.balance);
       const newToBalance = (currentTo + parseFloat(toAmount)).toFixed(8);
 
       // update both balances
