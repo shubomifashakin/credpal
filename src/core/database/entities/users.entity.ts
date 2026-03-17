@@ -35,6 +35,12 @@ export class User {
   })
   role: UserRole;
 
+  @Column({ nullable: true, name: 'first_name', length: 100 })
+  firstName: string;
+
+  @Column({ nullable: true, name: 'last_name', length: 100 })
+  lastName: string;
+
   @Column({ default: false, name: 'is_verified' })
   isVerified: boolean;
 
