@@ -14,7 +14,7 @@ export class WalletBalanceRepository {
   async findByWalletIdAndCurrency(
     walletId: string,
     currency: string,
-    manager?: EntityManager, // accepts external manager for transactions
+    manager?: EntityManager,
   ): Promise<WalletBalance | null> {
     const repo = manager ? manager.getRepository(WalletBalance) : this.repo;
 
@@ -39,7 +39,6 @@ export class WalletBalanceRepository {
         walletId,
         currency,
         balance: '0',
-        lockedBalance: '0',
       });
       await repo.save(balance);
     }

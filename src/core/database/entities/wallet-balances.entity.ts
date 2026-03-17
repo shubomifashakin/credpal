@@ -26,15 +26,6 @@ export class WalletBalance {
   @Column({ type: 'numeric', precision: 20, scale: 8, default: '0' })
   balance: string;
 
-  @Column({
-    type: 'numeric',
-    precision: 20,
-    scale: 8,
-    default: '0',
-    name: 'locked_balance',
-  })
-  lockedBalance: string;
-
   @ManyToOne(() => Wallet, (wallet) => wallet.balances)
   @JoinColumn({ name: 'wallet_id' })
   wallet: Wallet;
