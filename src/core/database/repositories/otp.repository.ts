@@ -1,4 +1,5 @@
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
+
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -11,17 +12,25 @@ export class OtpRepository {
     private readonly repo: Repository<Otp>,
   ) {}
 
-  async create(data: {
-    userId: string;
-    code: string;
-    expiresAt: Date;
-  }): Promise<Otp> {
-    const otp = this.repo.create(data);
-    return this.repo.save(otp);
+  async create(
+    data: {
+      userId: string;
+      code: string;
+      expiresAt: Date;
+    },
+    manager?: EntityManager,
+  ): Promise<Otp> {
+    const repo = manager ? manager.getRepository(Otp) : this.repo;
+    const otp = repo.create(data);
+    return repo.save(otp);
   }
 
-  async findActiveByUserId(userId: string): Promise<Otp | null> {
-    return this.repo.findOne({
+  async findActiveByUserId(
+    userId: string,
+    manager?: EntityManager,
+  ): Promise<Otp | null> {
+    const repo = manager ? manager.getRepository(Otp) : this.repo;
+    return repo.findOne({
       where: {
         userId,
         used: false,
@@ -30,11 +39,16 @@ export class OtpRepository {
     });
   }
 
-  async invalidateAllByUserId(userId: string): Promise<void> {
-    await this.repo.update({ userId, used: false }, { used: true });
+  async invalidateAllByUserId(
+    userId: string,
+    manager?: EntityManager,
+  ): Promise<void> {
+    const repo = manager ? manager.getRepository(Otp) : this.repo;
+    await repo.update({ userId, used: false }, { used: true });
   }
 
-  async markAsUsed(id: string): Promise<void> {
-    await this.repo.update(id, { used: true });
+  async markAsUsed(id: string, manager?: EntityManager): Promise<void> {
+    const repo = manager ? manager.getRepository(Otp) : this.repo;
+    await repo.update(id, { used: true });
   }
 }
