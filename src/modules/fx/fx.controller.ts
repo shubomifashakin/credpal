@@ -2,9 +2,10 @@ import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
 
 import { FxService } from './fx.service';
+import { FxRatesResultDto } from './dtos/get-rates-response.dto';
+
 import { SUPPORTED_CURRENCIES } from '../../common/constants';
 import { AuthGuard } from '../../common/guards/auth-guard/auth-guard.guard';
-import { FxRatesResultDto } from './dtos/get-rates-response.dto';
 
 @Controller('fx')
 @UseGuards(AuthGuard)
