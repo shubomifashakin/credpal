@@ -1,0 +1,29 @@
+export const DAYS_1 = 60 * 60 * 24;
+export const DAYS_1_MS = DAYS_1 * 1000;
+export const DAYS_7 = 60 * 60 * 24 * 7;
+export const DAYS_7_MS = DAYS_7 * 1000;
+export const DAYS_14 = 14 * 24 * 60 * 60;
+export const DAYS_14_MS = DAYS_14 * 1000;
+export const MINUTES_30 = 30 * 60;
+export const MINUTES_30_MS = MINUTES_30 * 1000;
+export const MINUTES_10 = 10 * 60;
+export const MINUTES_10_MS = MINUTES_10 * 1000;
+export const MINUTES_5 = 5 * 60;
+export const MINUTES_5_MS = MINUTES_5 * 1000;
+export const MINUTES_1 = 1 * 60;
+export const MINUTES_1_MS = MINUTES_1 * 1000;
+
+export const TOKEN = {
+  ACCESS: {
+    TYPE: 'access_token' as const,
+    EXPIRATION: '5m',
+    EXPIRATION_SEC: MINUTES_5,
+    EXPIRATION_MS: MINUTES_5_MS,
+  },
+  REFRESH: {
+    TYPE: 'refresh_token' as const,
+    EXPIRATION: '7d',
+    EXPIRATION_SEC: DAYS_7,
+    EXPIRATION_MS: DAYS_7_MS,
+  },
+} as const;
